@@ -7,11 +7,11 @@ import { motion } from 'framer-motion'
 interface SpeechRecognitionResult {
   transcript: string;
   confidence: number;
-  isFinal?: boolean;
 }
 
 interface SpeechRecognitionAlternative {
   [index: number]: SpeechRecognitionResult;
+  isFinal: boolean;
 }
 
 interface SpeechRecognitionResults {
@@ -67,7 +67,7 @@ const Hero: React.FC = () => {
 
         for (let i = 0; i < event.results.length; i++) {
           const result = event.results[i];
-          if (result[0].confidence > 0) { // Only process if we have confidence in the result
+          if (result[0].confidence > 0) {
             if (result.isFinal) {
               finalTranscript += result[0].transcript;
             } else {
@@ -76,10 +76,8 @@ const Hero: React.FC = () => {
           }
         }
 
-        // Update the interim transcript for real-time feedback
         setInterimTranscript(interimTranscript);
         
-        // If we have a final transcript, update that too
         if (finalTranscript) {
           setTranscript(prev => prev + ' ' + finalTranscript);
         }
